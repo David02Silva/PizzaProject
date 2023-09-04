@@ -31,7 +31,16 @@ pizzaJson.forEach((item, index) =>{
         document.querySelector(".pizzaBig img").src = item.img
         document.querySelector(".pizzaInfo--actualPrice").innerHTML = `${item.price}€`
 
-   
+    document.querySelector(".pizzaInfo--addButton").addEventListener("click", ()=>{
+        //Qual a pizza?
+        console.log(item.name)
+        //Qual o tamanho?
+        console.log(item)
+        //Quantas pizzas?
+        
+    
+    
+    })
 
         document.querySelectorAll(".pizzaInfo--sizes div").forEach((div, index) =>{
             if(index == 2){
@@ -54,15 +63,7 @@ pizzaJson.forEach((item, index) =>{
         })
     } )
 
-    document.querySelector(".pizzaInfo--addButton").addEventListener("click", ()=>{
-        //Qual a pizza?
-        console.log(target.item.name)
-        //Qual o tamanho?
-        //Quantas pizzas?
-        
-    
-    
-    })
+   
 })
 
 
