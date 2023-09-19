@@ -6,6 +6,7 @@ let pizQt = 1;
 let pizzaKey = 0;
 let pizzaSize = 0;
 let cart = [];
+let pizzaPrice = 0;
 
 //Functions:
 //Event for Closing "PizzaWindowArea"
@@ -15,6 +16,100 @@ function clsPizArea(){
         qry(".pizzaWindowArea").style.display = "none"
     }, 500)
 }
+
+//Opening the cart with all items that we have
+function updateCart(){
+
+    qry(".menu-openner span").innerHTML = cart.length;
+
+    // Quando Voltar objetivo é apresentar devidamente os items no meu Cart
+    if(cart.length > 0){
+        qry("aside").classList.add("show")
+
+        let checkItem = qryAll(".cart--area .cart--item");
+        if(checkItem == undefined){
+            return
+        }else{
+            checkItem.forEach((item)=>{
+                qry(".cart--area").removeChild(item)
+            })
+        }
+        
+        cart.forEach((pizza)=>{
+            let cartItem = qry(".cart--item").cloneNode(true);
+            let pizzaItem = pizzaJson.find((item)=>{
+                return item.id = pizza.id
+            })
+
+
+            qry(".cart--area").append(cartItem)
+            
+         
+            cartItem.querySelector("img").src = pizza.id.img
+            cartItem.querySelector(".cart--item--qt").innerHTML = pizza.qt
+            
+            let pizzaSiLett = "";
+
+            switch(pizza.size){
+                case pizza.id.sizes[0]:
+                pizzaSiLett = "P";
+                break;
+
+                case pizza.id.sizes[1]:
+                    pizzaSiLett = "M";
+                    break;
+                    
+                case pizza.id.sizes[2]:
+                pizzaSiLett = "G";
+                break;
+                
+            }
+               cartItem.querySelector(".cart--item-nome").innerHTML = `${pizza.name} (${pizzaSiLett})` 
+
+
+
+               cartItem.querySelector(".cart--item-qtmenos").addEventListener("click", ()=>{
+                    pizza.qt--;
+                    updateCart();
+
+                    if(pizza.qt < 1){
+                        cart.splice((cart.findIndex((item)=>pizza.check == item.check)), 1)
+                        updateCart()
+                    }
+               })
+
+               cartItem.querySelector(".cart--item-qtmais").addEventListener("click", ()=>{
+                    pizza.qt++
+                    updateCart();
+               })
+
+
+
+               let subTotal = 0;
+               for(let i in cart){
+                subTotal += cart[i].id.price * cart[i].qt;
+               }
+               subTotal = subTotal.toFixed(2)
+            
+               let subTotalShow = qryAll(".cart--totalitem span")[1]
+               subTotalShow.innerHTML = `${subTotal}€`
+
+               let descount = (subTotal * 0.10).toFixed(2)
+               let descountShow = qryAll(".cart--totalitem span")[3]
+               descountShow.innerHTML = `${descount}€`
+
+               let total = subTotal - descount;
+               let totalShow = qryAll(".cart--totalitem span")[5]
+               totalShow.innerHTML = `${total.toFixed(2)}€`
+
+               
+        })
+    }else{
+        qry("aside").classList.remove("show")
+        qry("aside").style.left = "100vw"
+    }
+}
+
 
 
 //Show on the screen all pizzas for "pizzaJson":
@@ -77,14 +172,17 @@ pizzaJson.forEach((item, index)=>{
                 pizzaSize = e.target.getAttribute("data-key");
            })
         })
-        //Price:
-        qry(".pizzaInfo--actualPrice").innerHTML = `${item.price.toFixed(2)} €`;
         //Amount of Pizzas:
         qry(".pizzaInfo--qt").innerHTML = pizQt; 
+
+        //Price:
+        qry(".pizzaInfo--actualPrice").innerHTML = `${item.price.toFixed(2)} €`;
+        pizzaPrice = item.price.toFixed(2);
     })
 
     //Button Cancel on "pizzaWidowArea"
     qry(".pizzaInfo--cancelButton").addEventListener("click", clsPizArea);
+    qry(".pizzaInfo--cancelMobileButton").addEventListener("click", clsPizArea)
 
 })
 
@@ -92,6 +190,7 @@ pizzaJson.forEach((item, index)=>{
 qry(".pizzaInfo--qtmais").addEventListener("click", ()=>{
     pizQt++;
     qry(".pizzaInfo--qt").innerHTML = pizQt;
+    qry(".pizzaInfo--actualPrice").innerHTML = `${(pizzaPrice * pizQt).toFixed(2)} €`
 })
 
 //Button remove pizzas on "pizzaWindowArea"
@@ -99,6 +198,7 @@ qry(".pizzaInfo--qtmenos").addEventListener("click", ()=>{
     if(pizQt > 1){
         pizQt--;
         qry(".pizzaInfo--qt").innerHTML = pizQt;
+        qry(".pizzaInfo--actualPrice").innerHTML = `${(pizzaPrice * pizQt).toFixed(2)} €`
     }
 })
 
@@ -117,12 +217,22 @@ qry(".pizzaInfo--addButton").addEventListener("click", ()=>{
             check,
             name: pizzaKey.name,
             qt: pizQt,
-            size: pizzaKey.sizes[pizzaSize]
+            size: pizzaKey.sizes[pizzaSize],
+            id: pizzaKey
         })
       
     }else{
         cart[result].qt += pizQt;
     }
+    updateCart();
     clsPizArea();
-
 })
+qry(".menu-openner").addEventListener("click", ()=>{
+    if(cart.length > 0){
+        qry("aside").style.left = "0"
+    }
+})
+qry(".menu-closer").addEventListener("click", ()=>{
+    qry("aside").style.left = "100vw"
+})
+

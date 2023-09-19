@@ -11,6 +11,7 @@ Do que se trata:
  Criação de um site de vendas de produtos, neste caso "pizza" em que será realizado 100% através da linguagem JavaScript. Todos os documentos de HTML e CSS já existiam e as suas funções servem somente de auxílio ao exercicio.
 
 . Ps: Este trabalho foi resetado com intuito de conseguir aplicar todos os objetivos a cima referidos.
+    O botão de "Finalizar a compra" não funciona pois já exigia a crição de mais um documento e objetivo é simplesmente aplicar conhecimentos de JavaScript da página principal do site.
 
 
 ---------------------------------------------------------------------------------------------------------
@@ -28,3 +29,4 @@ What it is:
  Creation of sales site, in this case "pizza", which will be carried out 100% through the JavaScript language. All HTML and CSS documents already existed and their functions only serve as an aid to the exercise.
 
 . Ps: This work was reset in order to be able to apply all the objectives mentioned above.
+    The button of "Finnish the buy" does not work, beacuse the intention of the project is to apply all the JavaScript knowledge acquired on the pizza screen.
